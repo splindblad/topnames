@@ -1,6 +1,6 @@
 # topnames - Most popular baby names by birth year
 
-This is a simple sample Python program used for demonstration purposes at FARCON 2016. It reads data on the most popular bably names by birth year from data provided by the Social Security Administration, and display the most popular girl's name and most popular boy's name for each year.
+This is a simple sample Python program used for demonstration purposes at FARCON 2016. It reads data on the most popular baby names by birth year from data provided by the Social Security Administration, and display the most popular girl's name and most popular boy's name for each year.
 
 The data is available from
 https://catalog.data.gov/dataset/baby-names-from-social-security-card-applications-national-level-data
