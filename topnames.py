@@ -11,6 +11,7 @@ Based on data from Social Security card applications.
 """
 
 import zipfile
+import io
 import re
 
 
@@ -24,15 +25,15 @@ def processline(s):
 
 
 def getnames(f):
-    """Read file f and obtain the most popular girls' and boys' names."""
+    """Read text stream f and obtain the most popular girls' and boys' names."""
     # Assumes file is sorted with girl names first, boy names second, and the
     # most popular name at the top of each list.
 
-    lineoftext = f.readline().decode()
+    lineoftext = f.readline()
     girl,sex,count = processline(lineoftext)
 
     while sex != "M":
-        name,sex,count = processline(f.readline().decode())
+        name,sex,count = processline(f.readline())
     boy=name
 
     return girl,boy
@@ -47,8 +48,9 @@ def process_socsec_zipfile(filepath='names.zip'):
         m = re.match("yob([0-9]+)\.txt",filename)
         if m:
             year = int(m.group(1))
-            with zf.open(filename) as f:
-                girl,boy = getnames(f)
+            with zf.open(filename) as zfile:
+                with io.TextIOWrapper(zfile) as f:
+                    girl,boy = getnames(f)
             d[year] = (girl,boy)
 
     return d
