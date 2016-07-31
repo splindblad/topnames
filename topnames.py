@@ -4,10 +4,9 @@ greeting="""
 FAR Con
 August 24, 2016
 
-Read and display the most popular baby names by year.
-For each year of birth, the most popular girl's name and the most
-popular boy's name is shown.
-Based on data from Social Security card applications.
+Sample Python program to read and display the most popular baby names by year.
+For each year of birth, the most popular girl's name and the most popular
+boy's name is shown. Based on data from Social Security card applications.
 """
 
 import zipfile
@@ -30,13 +29,13 @@ def getnames(f):
     # most popular name at the top of each list.
 
     lineoftext = f.readline()
-    girl,sex,count = processline(lineoftext)
+    girlname,sex,count = processline(lineoftext)
 
     while sex != "M":
         name,sex,count = processline(f.readline())
-    boy=name
+    boyname=name
 
-    return girl,boy
+    return girlname,boyname
 
 
 def process_socsec_zipfile(filepath='names.zip'):
@@ -50,8 +49,8 @@ def process_socsec_zipfile(filepath='names.zip'):
             year = int(m.group(1))
             with zf.open(filename) as zfile:
                 with io.TextIOWrapper(zfile) as f:
-                    girl,boy = getnames(f)
-            d[year] = (girl,boy)
+                    girlname,boyname = getnames(f)
+            d[year] = (girlname,boyname)
 
     return d
 
