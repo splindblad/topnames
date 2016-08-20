@@ -19,4 +19,4 @@ names second. Within each section, the names are sorted with the most
 popular names first.
 
 topnames2.py is a version of the program with sample code for writing
-the results to .csv and .xls files.
+the results to .csv and .xlsx files.
