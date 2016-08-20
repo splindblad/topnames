@@ -40,34 +40,34 @@ def getnames(f):
 
 def process_socsec_zipfile(filepath='names.zip'):
     "Returns dictionary with most popular girl's and boy's name each year"
-    d = dict()
+    topnames = dict()
     zf = zipfile.ZipFile(filepath)
 
     for filename in zf.namelist():
-        m = re.match("yob([0-9]+)\.txt",filename)
+        m = re.match(r'yob([0-9]+)\.txt',filename)
         if m:
             year = int(m.group(1))
             with zf.open(filename) as zfile:
                 with io.TextIOWrapper(zfile) as f:
                     girlname,boyname = getnames(f)
-            d[year] = (girlname,boyname)
+            topnames[year] = (girlname,boyname)
 
-    return d
+    return topnames
 
 
-def display_topnames(topname):
+def display_topnames(topnames):
     print("Year       Top Girl's Name   Top Boy's Name")
     for year in range(1880,2016):
-        if year in topname:
+        if year in topnames:
             display = "{year:4d}       {girl:<15s}   {boy:<15s}".format(
-                year=year, girl=topname[year][0], boy=topname[year][1] )
+                year=year, girl=topnames[year][0], boy=topnames[year][1] )
             print(display)
 
 
 def main():
     print(greeting)
-    topname = process_socsec_zipfile("names.zip")
-    display_topnames(topname)
+    topnames = process_socsec_zipfile("names.zip")
+    display_topnames(topnames)
     print("End")
 
 
