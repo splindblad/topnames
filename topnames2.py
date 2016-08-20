@@ -12,6 +12,8 @@ boy's name is shown. Based on data from Social Security card applications.
 import zipfile
 import io
 import re
+import csv
+import xlsxwriter
 
 
 def processline(s):
@@ -64,10 +66,53 @@ def display_topnames(topname):
             print(display)
 
 
+def write_topnames_csv(topname,filepath='topnames.csv'):
+    """topname is dictionary of top names by year"""
+    with open(filepath,"w") as f:
+        w = csv.writer(f,dialect='excel',quoting=csv.QUOTE_NONNUMERIC)
+        w.writerow(["Top birth names by year from Social Security card applications"])
+        w.writerow([""])
+        w.writerow(["Year","Top Girl's Name","Top Boy's Name"])
+        for year in topname:
+            w.writerow([ year, topname[year][0], topname[year][1] ])
+
+
+def write_topnames_xlsx(topname,filepath='topnames.xlsx'):
+    workbook = xlsxwriter.Workbook(filepath)
+    worksheet = workbook.add_worksheet()
+
+    # Set column widths
+    worksheet.set_column('A:A', 8)
+    worksheet.set_column('B:B', 18)
+    worksheet.set_column('C:C', 18)
+
+    # Set up some formats
+    bold = workbook.add_format({'bold': True})
+    left = workbook.add_format({'align': 'left'})
+    header_fmt = workbook.add_format({'bold': True, 'align': 'left', 'text_wrap': True})
+
+    # Writing headings
+    worksheet.write("A1","Top birth names by year from Social Security card applications")
+    worksheet.write("A3","Year", header_fmt)
+    worksheet.write("B3","Top Girl's Name", header_fmt)
+    worksheet.write("C3","Top Boy's Name", header_fmt)
+    
+    # Write the data by year
+    for year in topname:
+        row = year-1880+3
+        worksheet.write(row, 0, year, left)
+        worksheet.write(row, 1, topname[year][0], left)
+        worksheet.write(row, 2, topname[year][1], left)
+
+    workbook.close()
+
+
 def main():
     print(greeting)
     topname = process_socsec_zipfile("names.zip")
     display_topnames(topname)
+    write_topnames_csv(topname)
+    write_topnames_xlsx(topname)
     print("End")
 
 
