@@ -46,7 +46,7 @@ def process_socsec_zipfile(filepath='names.zip'):
     zf = zipfile.ZipFile(filepath)
 
     for filename in zf.namelist():
-        m = re.match(r'yob([0-9]+)\.txt',filename)
+        m = re.match(r'yob([0-9]+)\.txt$',filename)
         if m:
             year = int(m.group(1))
             with zf.open(filename) as zfile:
